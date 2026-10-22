@@ -30,9 +30,9 @@ You need Java 17+, Maven and PostgreSQL.
 2. Copy `.env.example` to `.env` and fill it in:
 
 ```properties
-   DB_URL=jdbc:postgresql://localhost:5432/feedback_portal
-   DB_USERNAME=postgres
-   DB_PASSWORD=your_password
+   FEEDBACK_DB_URL=jdbc:postgresql://localhost:5432/feedback_portal
+   FEEDBACK_DB_USERNAME=postgres
+   FEEDBACK_DB_PASSWORD=your_password
 
    ADMIN_USER_ID=your_admin_id
    ADMIN_PASSWORD=pick_something_strong
