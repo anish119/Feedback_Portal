@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Feedback — Feedback Portal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#74c69d; margin-right:4px;">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+            Feedback<span>Portal</span>
+        </div>
+        <nav>
+            <a th:href="@{/feedback/new}">Add Feedback</a>
+            <a th:href="@{/feedback/my}">My Feedbacks</a>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container container-sm">
+        <div class="card">
+            <div class="card-header">
+                <h1>Edit Feedback</h1>
+                <p>Update your feedback below</p>
+            </div>
+
+            <form th:action="@{/feedback/edit/{id}(id=${feedbackId})}"
+                  th:object="${feedbackDto}" method="post" novalidate>
+
+                <div class="form-group">
+                    <label for="feedback">Feedback</label>
+                    <textarea id="feedback" th:field="*{feedback}"
+                              class="form-control" th:classappend="${#fields.hasErrors('feedback')} ? 'is-invalid'"
+                              rows="6"></textarea>
+                    <div th:if="${#fields.hasErrors('feedback')}" class="error-text" th:errors="*{feedback}"></div>
+                </div>
+
+                <div class="flex gap-1">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a th:href="@{/feedback/my}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

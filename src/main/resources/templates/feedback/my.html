@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedbacks — Feedback Portal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#74c69d; margin-right:4px;">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+            Feedback<span>Portal</span>
+        </div>
+        <nav>
+            <a th:href="@{/feedback/new}">Add Feedback</a>
+            <a th:href="@{/feedback/my}" class="active">My Feedbacks</a>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>My Feedbacks</h1>
+                <p>View and edit your submitted feedback</p>
+            </div>
+
+            <!-- Success alert -->
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+            <!-- Empty state -->
+            <div th:if="${#lists.isEmpty(feedbacks)}" class="empty-state">
+                <p>You haven't submitted any feedback yet.</p>
+                <a th:href="@{/feedback/new}" class="btn btn-primary mt-2">Add Feedback</a>
+            </div>
+
+            <!-- Feedback list -->
+            <div th:unless="${#lists.isEmpty(feedbacks)}" class="feedback-list">
+                <div th:each="fb : ${feedbacks}" class="feedback-item">
+                    <div class="meta">
+                        <span class="date" th:text="${#temporals.format(fb.date, 'dd MMM yyyy, hh:mm a')}"></span>
+                        <a th:href="@{/feedback/edit/{id}(id=${fb.feedbackId})}" class="btn btn-secondary btn-sm">Edit</a>
+                    </div>
+                    <div class="text" th:text="${fb.feedback}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

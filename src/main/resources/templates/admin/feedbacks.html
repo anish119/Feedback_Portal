@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Feedbacks — Admin — Feedback Portal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="brand">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:middle; color:#74c69d; margin-right:4px;">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+            Feedback<span>Portal</span> <small style="font-size:.7rem;color:var(--jungle-lime);margin-left:.5rem;">ADMIN</small>
+        </div>
+        <nav>
+            <a th:href="@{/admin/feedbacks}" class="active">All Feedbacks</a>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container" style="max-width:1100px;">
+        <div class="card">
+            <div class="card-header">
+                <h1>All Feedbacks</h1>
+                <p>Manage all user feedback submissions</p>
+            </div>
+
+            <!-- Success alert -->
+            <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+            <!-- Filter bar -->
+            <form th:action="@{/admin/feedbacks}" method="get" class="filter-bar">
+                <div class="filter-group combobox-wrapper" id="userIdCombobox">
+                    <label for="filterUserId">User ID</label>
+                    <div class="combobox-input-wrapper">
+                        <input type="text" id="filterUserId" name="userId"
+                               th:value="${filterUserId}" placeholder="e.g. john123"
+                               autocomplete="off" aria-autocomplete="list" aria-expanded="false" role="combobox"
+                               aria-controls="userIdDropdown">
+                        <button type="button" class="combobox-toggle" tabindex="-1" aria-label="Toggle user list">
+                            <svg viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="userIdDropdown" class="combobox-dropdown" role="listbox" style="display:none;"></div>
+                </div>
+                <div class="filter-group">
+                    <label for="filterDateFrom">Date From</label>
+                    <input type="date" id="filterDateFrom" name="dateFrom"
+                           th:value="${filterDateFrom}">
+                </div>
+                <div class="filter-group">
+                    <label for="filterDateTo">Date To</label>
+                    <input type="date" id="filterDateTo" name="dateTo"
+                           th:value="${filterDateTo}">
+                </div>
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+                    <a th:href="@{/admin/feedbacks}" class="btn btn-secondary btn-sm">Reset</a>
+                </div>
+            </form>
+
+            <!-- Empty state -->
+            <div th:if="${#lists.isEmpty(feedbacks)}" class="empty-state">
+                <p>No feedbacks found.</p>
+            </div>
+
+            <!-- Table -->
+            <div th:unless="${#lists.isEmpty(feedbacks)}" class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:12%;">User ID</th>
+                            <th>Feedback</th>
+                            <th style="width:16%;">Date</th>
+                            <th style="width:16%;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="fb : ${feedbacks}">
+                            <td th:text="${fb.userId}"></td>
+                            <td style="white-space:pre-wrap;word-break:break-word;" th:text="${fb.feedback}"></td>
+                            <td th:text="${#temporals.format(fb.date, 'dd MMM yyyy, hh:mm a')}"></td>
+                            <td class="actions">
+                                <!-- Edit link — pass current filters -->
+                                <a th:href="@{/admin/feedbacks/edit/{id}(id=${fb.feedbackId},
+                                    userId=${filterUserId}, dateFrom=${filterDateFrom}, dateTo=${filterDateTo})}"
+                                   class="btn btn-secondary btn-sm">Edit</a>
+
+                                <!-- Delete form — POST with CSRF, preserves filters -->
+                                <form th:action="@{/admin/feedbacks/delete/{id}(id=${fb.feedbackId})}"
+                                      method="post" style="display:inline;"
+                                      onsubmit="return confirm('Are you sure you want to delete this feedback?');">
+                                    <input type="hidden" name="filterUserId" th:value="${filterUserId}">
+                                    <input type="hidden" name="filterDateFrom" th:value="${filterDateFrom}">
+                                    <input type="hidden" name="filterDateTo" th:value="${filterDateTo}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Combobox Vanilla JS -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const wrapper = document.getElementById('userIdCombobox');
+        if (!wrapper) return;
+
+        const input = document.getElementById('filterUserId');
+        const dropdown = document.getElementById('userIdDropdown');
+        const toggleBtn = wrapper.querySelector('.combobox-toggle');
+
+        let debounceTimer = null;
+        let activeIndex = -1;
+        let currentItems = [];
+
+        function isOpen() {
+            return dropdown.style.display === 'block';
+        }
+
+        function openDropdown() {
+            dropdown.style.display = 'block';
+            input.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeDropdown() {
+            dropdown.style.display = 'none';
+            input.setAttribute('aria-expanded', 'false');
+            activeIndex = -1;
+            updateActiveItem();
+        }
+
+        function updateActiveItem() {
+            const itemEls = dropdown.querySelectorAll('.combobox-item:not(.empty)');
+            itemEls.forEach((el, idx) => {
+                if (idx === activeIndex) {
+                    el.classList.add('active');
+                    el.scrollIntoView({ block: 'nearest' });
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+        }
+
+        function renderItems(users) {
+            currentItems = users || [];
+            dropdown.innerHTML = '';
+            activeIndex = -1;
+
+            if (currentItems.length === 0) {
+                const emptyEl = document.createElement('div');
+                emptyEl.className = 'combobox-item empty';
+                emptyEl.textContent = 'No matching users';
+                dropdown.appendChild(emptyEl);
+            } else {
+                currentItems.forEach((userId, idx) => {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = 'combobox-item';
+                    itemEl.setAttribute('role', 'option');
+                    itemEl.setAttribute('data-index', idx);
+                    itemEl.textContent = userId;
+
+                    itemEl.addEventListener('mousedown', function (e) {
+                        e.preventDefault(); // prevent blur before selection
+                        selectItem(userId);
+                    });
+
+                    dropdown.appendChild(itemEl);
+                });
+            }
+            openDropdown();
+        }
+
+        function selectItem(userId) {
+            input.value = userId;
+            closeDropdown();
+            input.focus();
+        }
+
+        function fetchUsers(query) {
+            const q = (query || '').trim();
+            const url = '/admin/users/ids' + (q ? '?q=' + encodeURIComponent(q) : '');
+            fetch(url, {
+                headers: { 'Accept': 'application/json' }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Network error: ' + res.status);
+                return res.json();
+            })
+            .then(users => {
+                renderItems(users);
+            })
+            .catch(err => {
+                console.error('Error fetching user IDs:', err);
+            });
+        }
+
+        // Click / focus: show user list
+        input.addEventListener('focus', function () {
+            fetchUsers(input.value);
+        });
+
+        input.addEventListener('click', function () {
+            if (!isOpen()) {
+                fetchUsers(input.value);
+            }
+        });
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isOpen()) {
+                    closeDropdown();
+                } else {
+                    input.focus();
+                    fetchUsers('');
+                }
+            });
+        }
+
+        // Live narrowing with ~200ms debounce
+        input.addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                fetchUsers(input.value);
+            }, 200);
+        });
+
+        // Keyboard navigation
+        input.addEventListener('keydown', function (e) {
+            const itemEls = dropdown.querySelectorAll('.combobox-item:not(.empty)');
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (!isOpen()) {
+                    fetchUsers(input.value);
+                    return;
+                }
+                if (itemEls.length > 0) {
+                    activeIndex = (activeIndex + 1) % itemEls.length;
+                    updateActiveItem();
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!isOpen()) {
+                    fetchUsers(input.value);
+                    return;
+                }
+                if (itemEls.length > 0) {
+                    activeIndex = (activeIndex - 1 + itemEls.length) % itemEls.length;
+                    updateActiveItem();
+                }
+            } else if (e.key === 'Enter') {
+                if (isOpen() && activeIndex >= 0 && activeIndex < currentItems.length) {
+                    e.preventDefault();
+                    selectItem(currentItems[activeIndex]);
+                }
+                // If dropdown not open or no item active, allow standard form submission
+            } else if (e.key === 'Escape') {
+                if (isOpen()) {
+                    e.preventDefault();
+                    closeDropdown();
+                }
+            }
+        });
+
+        // Close on outside click
+        document.addEventListener('click', function (e) {
+            if (!wrapper.contains(e.target)) {
+                closeDropdown();
+            }
+        });
+    });
+    </script>
+</body>
+</html>

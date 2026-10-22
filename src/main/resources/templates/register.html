@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Feedback Portal</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <!-- Frosted-Glass Center Card -->
+        <div class="auth-card">
+            <div class="logo">
+                <div class="brand-badge">
+                    <svg class="brand-leaf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="#d8f3dc" stroke="#2d6a3f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" stroke="#1b4332" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <h1>Feedback<span>Portal</span></h1>
+                </div>
+                <p class="tagline">Join the Feedback Jungle</p>
+            </div>
+
+            <!-- Global error message (e.g. duplicate user ID or admin ID blocked) -->
+            <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+            <form th:action="@{/register}" th:object="${registrationDto}" method="post" novalidate>
+
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" th:field="*{userId}"
+                           class="form-control" th:classappend="${#fields.hasErrors('userId')} ? 'is-invalid'"
+                           placeholder="Choose a unique user ID" required autofocus>
+                    <div th:if="${#fields.hasErrors('userId')}" class="error-text" th:errors="*{userId}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" th:field="*{password}"
+                           class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'"
+                           placeholder="At least 6 characters" required>
+                    <div th:if="${#fields.hasErrors('password')}" class="error-text" th:errors="*{password}"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" th:field="*{confirmPassword}"
+                           class="form-control" th:classappend="${#fields.hasErrors('confirmPassword')} ? 'is-invalid'"
+                           placeholder="Re-enter your password" required>
+                    <div th:if="${#fields.hasErrors('confirmPassword')}" class="error-text" th:errors="*{confirmPassword}"></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a th:href="@{/login}">Sign in</a>
+            </div>
+        </div>
+
+        <!-- Jungle Decorative Foliage & Ambient Elements (Offline Inline SVG) -->
+        <div class="jungle-decorations" aria-hidden="true">
+            <!-- Top-Left Hanging Jungle Vines -->
+            <svg class="plant-decor plant-vine-tl" viewBox="0 0 280 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="vineStemReg" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#143d22"/>
+                        <stop offset="100%" stop-color="#2d6a3f"/>
+                    </linearGradient>
+                    <linearGradient id="leafGradReg1" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#52b788"/>
+                        <stop offset="100%" stop-color="#1b4d27"/>
+                    </linearGradient>
+                    <linearGradient id="leafGradReg2" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#74c69d"/>
+                        <stop offset="100%" stop-color="#2d6a3f"/>
+                    </linearGradient>
+                </defs>
+                <path d="M-10 -10 C 40 40, 60 120, 45 180 C 35 230, 75 270, 95 305" stroke="url(#vineStemReg)" stroke-width="5" stroke-linecap="round"/>
+                <path d="M-10 30 C 70 80, 110 160, 100 230 C 95 270, 120 290, 135 315" stroke="url(#vineStemReg)" stroke-width="3" stroke-linecap="round"/>
+                <path d="M95 305 C 110 325, 125 315, 120 300 C 115 285, 100 295, 105 310" stroke="url(#vineStemReg)" stroke-width="2"/>
+                <path d="M25 50 C 45 35, 75 55, 65 80 C 55 100, 30 85, 25 50 Z" fill="url(#leafGradReg1)"/>
+                <path d="M25 50 Q 48 70 65 80" stroke="#74c69d" stroke-width="1.2"/>
+                <path d="M50 110 C 80 100, 105 130, 90 155 C 75 175, 45 150, 50 110 Z" fill="url(#leafGradReg2)"/>
+                <path d="M50 110 Q 75 135 90 155" stroke="#95d5b2" stroke-width="1.2"/>
+                <path d="M48 175 C 20 185, 10 220, 30 240 C 50 255, 70 225, 48 175 Z" fill="url(#leafGradReg1)"/>
+                <path d="M48 175 Q 30 215 30 240" stroke="#74c69d" stroke-width="1.2"/>
+                <path d="M70 235 C 100 230, 125 255, 110 280 C 95 300, 70 275, 70 235 Z" fill="url(#leafGradReg2)"/>
+                <path d="M85 90 C 115 80, 140 105, 125 130 C 110 150, 85 125, 85 90 Z" fill="url(#leafGradReg2)"/>
+                <path d="M102 165 C 130 155, 155 180, 140 205 C 125 225, 100 200, 102 165 Z" fill="url(#leafGradReg1)"/>
+                <path d="M100 230 C 125 220, 145 245, 130 265 C 115 285, 95 260, 100 230 Z" fill="url(#leafGradReg2)"/>
+                <circle cx="95" cy="305" r="3.5" fill="#95d5b2"/>
+                <circle cx="135" cy="315" r="3" fill="#74c69d"/>
+            </svg>
+
+            <!-- Top-Right Tropical Palm Fronds -->
+            <svg class="plant-decor plant-palm-tr" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="palmGradReg1" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#143d22"/>
+                        <stop offset="60%" stop-color="#2d6a3f"/>
+                        <stop offset="100%" stop-color="#52b788"/>
+                    </linearGradient>
+                    <linearGradient id="palmGradReg2" x1="100%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#10321f"/>
+                        <stop offset="50%" stop-color="#1b4d27"/>
+                        <stop offset="100%" stop-color="#40916c"/>
+                    </linearGradient>
+                </defs>
+                <g opacity="0.75">
+                    <path d="M330 -10 Q 230 60 140 170" stroke="#10321f" stroke-width="4"/>
+                    <path d="M300 15 C 260 20, 200 60, 175 100 C 215 85, 270 50, 300 15 Z" fill="url(#palmGradReg2)"/>
+                    <path d="M265 45 C 220 60, 165 110, 135 155 C 180 135, 235 90, 265 45 Z" fill="url(#palmGrad2)"/>
+                    <path d="M230 85 C 185 105, 135 160, 105 210 C 150 185, 200 135, 230 85 Z" fill="url(#palmGradReg2)"/>
+                    <path d="M190 125 C 150 150, 105 210, 80 260 C 120 230, 165 180, 190 125 Z" fill="url(#palmGradReg2)"/>
+                </g>
+                <path d="M330 -20 Q 210 50 110 190" stroke="#1b4d27" stroke-width="4.5"/>
+                <path d="M320 10 C 270 20, 210 70, 180 125 C 225 105, 285 60, 320 10 Z" fill="url(#palmGradReg1)"/>
+                <path d="M280 40 C 230 60, 170 120, 140 180 C 190 155, 250 100, 280 40 Z" fill="url(#palmGradReg1)"/>
+                <path d="M245 75 C 195 100, 135 170, 105 235 C 155 205, 215 145, 245 75 Z" fill="url(#palmGradReg1)"/>
+                <path d="M205 115 C 160 145, 105 220, 75 285 C 120 250, 175 190, 205 115 Z" fill="url(#palmGradReg1)"/>
+                <path d="M165 155 C 130 190, 80 260, 50 315 C 90 280, 140 225, 165 155 Z" fill="url(#palmGradReg1)"/>
+            </svg>
+
+            <!-- Bottom-Left Monstera Deliciosa -->
+            <svg class="plant-decor plant-monstera-bl" viewBox="0 0 320 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="monsteraGradReg" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#0d2818"/>
+                        <stop offset="40%" stop-color="#1b4d27"/>
+                        <stop offset="80%" stop-color="#2d6a3f"/>
+                        <stop offset="100%" stop-color="#52b788"/>
+                    </linearGradient>
+                    <linearGradient id="monsteraYoungReg" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#143d22"/>
+                        <stop offset="70%" stop-color="#40916c"/>
+                        <stop offset="100%" stop-color="#74c69d"/>
+                    </linearGradient>
+                </defs>
+                <g opacity="0.65" transform="rotate(-15 120 260)">
+                    <path d="M-10 350 C 40 300, 110 240, 170 190 C 220 220, 230 270, 180 320 C 130 360, 40 360, -10 350 Z" fill="url(#monsteraYoungReg)"/>
+                </g>
+                <path d="M-20 360 C 20 320, 80 260, 140 180 C 180 130, 220 70, 240 30" stroke="#10321f" stroke-width="6" stroke-linecap="round"/>
+                <path d="M 240 30
+                         C 210 40, 175 65, 185 90 C 190 100, 205 105, 175 120
+                         C 145 135, 120 130, 135 155 C 145 170, 170 170, 130 190
+                         C 95 210, 80 200, 95 230 C 110 255, 135 245, 95 275
+                         C 65 295, 30 310, -15 330
+                         C 30 350, 90 350, 145 325
+                         C 195 305, 185 285, 205 270
+                         C 230 255, 250 275, 260 245
+                         C 270 215, 245 205, 265 180
+                         C 285 155, 305 170, 310 140
+                         C 315 110, 285 100, 295 70
+                         C 300 45, 265 25, 240 30 Z"
+                      fill="url(#monsteraGradReg)"/>
+                <ellipse cx="195" cy="140" rx="6" ry="18" transform="rotate(-30 195 140)" fill="#0d2818" opacity="0.65"/>
+                <ellipse cx="225" cy="180" rx="7" ry="22" transform="rotate(-20 225 180)" fill="#0d2818" opacity="0.65"/>
+                <ellipse cx="160" cy="195" rx="5" ry="15" transform="rotate(-40 160 195)" fill="#0d2818" opacity="0.65"/>
+                <path d="M 120 205 Q 185 145 240 30" stroke="#74c69d" stroke-width="2.5" opacity="0.65"/>
+                <path d="M 140 180 Q 115 160 95 160" stroke="#74c69d" stroke-width="1.5" opacity="0.45"/>
+                <path d="M 165 150 Q 210 120 245 115" stroke="#74c69d" stroke-width="1.5" opacity="0.45"/>
+                <path d="M 185 120 Q 150 95 135 90" stroke="#74c69d" stroke-width="1.5" opacity="0.45"/>
+                <path d="M 210 85 Q 245 65 270 65" stroke="#74c69d" stroke-width="1.5" opacity="0.45"/>
+            </svg>
+
+            <!-- Bottom-Right Jungle Fern Frond -->
+            <svg class="plant-decor plant-fern-br" viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="fernGradReg" x1="100%" y1="100%" x2="0%" y2="0%">
+                        <stop offset="0%" stop-color="#0a2312"/>
+                        <stop offset="50%" stop-color="#1b4d27"/>
+                        <stop offset="100%" stop-color="#52b788"/>
+                    </linearGradient>
+                </defs>
+                <path d="M 320 350 Q 230 250 80 70" stroke="#10321f" stroke-width="4.5" stroke-linecap="round"/>
+                <path d="M 95 85 C 75 65, 50 65, 35 75 C 55 85, 75 90, 95 85 Z" fill="url(#fernGradReg)"/>
+                <path d="M 105 95 C 115 75, 135 70, 145 80 C 135 95, 120 100, 105 95 Z" fill="url(#fernGradReg)"/>
+                <path d="M 115 110 C 90 90, 60 90, 40 105 C 65 115, 95 120, 115 110 Z" fill="url(#fernGradReg)"/>
+                <path d="M 125 120 C 145 100, 170 95, 185 110 C 170 125, 145 130, 125 120 Z" fill="url(#fernGradReg)"/>
+                <path d="M 135 140 C 105 120, 70 120, 45 135 C 75 150, 110 150, 135 140 Z" fill="url(#fernGradReg)"/>
+                <path d="M 150 150 C 175 125, 205 125, 225 145 C 200 160, 170 165, 150 150 Z" fill="url(#fernGradReg)"/>
+                <path d="M 160 175 C 125 150, 85 150, 55 170 C 90 185, 130 185, 160 175 Z" fill="url(#fernGradReg)"/>
+                <path d="M 175 185 C 205 155, 240 155, 265 180 C 235 195, 200 200, 175 185 Z" fill="url(#fernGradReg)"/>
+                <path d="M 185 210 C 145 180, 100 180, 65 205 C 105 225, 155 225, 185 210 Z" fill="url(#fernGradReg)"/>
+                <path d="M 205 225 C 240 190, 280 190, 305 220 C 270 235, 235 240, 205 225 Z" fill="url(#fernGradReg)"/>
+                <path d="M 215 250 C 170 220, 120 220, 80 250 C 125 270, 180 270, 215 250 Z" fill="url(#fernGradReg)"/>
+                <path d="M 235 265 C 275 230, 315 230, 340 265 C 305 280, 265 285, 235 265 Z" fill="url(#fernGradReg)"/>
+            </svg>
+
+            <!-- Subtle Floating Fireflies -->
+            <div class="firefly firefly-1"></div>
+            <div class="firefly firefly-2"></div>
+            <div class="firefly firefly-3"></div>
+            <div class="firefly firefly-4"></div>
+            <div class="firefly firefly-5"></div>
+            <div class="firefly firefly-6"></div>
+        </div>
+    </div>
+</body>
+</html>

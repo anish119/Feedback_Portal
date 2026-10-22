@@ -1,0 +1,818 @@
+/* ═══════════════════════════════════════════════════════════
+   Feedback Portal — Jungle Botanical Theme
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ──────────────────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Jungle / Botanical Palette */
+    --primary: #2d6a3f;
+    --primary-dark: #1b4332;
+    --primary-light: #52b788;
+    --primary-tint: #e8f5ec;
+    --jungle-deep: #081c15;
+    --jungle-dark: #10321f;
+    --jungle-mid: #1b4d27;
+    --jungle-leaf: #2d6a3f;
+    --jungle-bright: #40916c;
+    --jungle-lime: #74c69d;
+    --jungle-soft: #95d5b2;
+    --jungle-light: #d8f3dc;
+
+    /* Frosted Card */
+    --card-bg: rgba(255, 255, 255, 0.90);
+    --card-border: rgba(255, 255, 255, 0.65);
+
+    /* Status Colors */
+    --success: #1b5329;
+    --success-bg: #edfbf4;
+    --success-border: #a3e6cd;
+    --danger: #9b1c1c;
+    --danger-bg: #fdf2f2;
+    --danger-border: #f8b4b4;
+    --warning: #b45309;
+    --warning-bg: #fef9c3;
+    --warning-border: #fde047;
+
+    /* Neutrals with subtle olive/forest undertones */
+    --gray-50: #f5f8f5;
+    --gray-100: #eaf0eb;
+    --gray-200: #d6e2d8;
+    --gray-300: #b5c7b7;
+    --gray-400: #889e8b;
+    --gray-500: #5c7460;
+    --gray-600: #3f5543;
+    --gray-700: #2a3c2e;
+    --gray-800: #1b291d;
+    --gray-900: #0f1c12;
+
+    --radius-sm: 6px;
+    --radius: 10px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(8, 28, 21, 0.06);
+    --shadow: 0 4px 12px rgba(8, 28, 21, 0.08), 0 1px 3px rgba(8, 28, 21, 0.05);
+    --shadow-lg: 0 20px 40px -15px rgba(8, 28, 21, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color .2s;
+}
+a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* ── Navbar (Jungle Canopy Style) ──────────────────────────── */
+.navbar {
+    background: linear-gradient(90deg, #081c15 0%, #10321f 50%, #1b4d27 100%);
+    color: #fff;
+    padding: .85rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(8, 28, 21, 0.25);
+    border-bottom: 1px solid rgba(116, 198, 157, 0.25);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar .brand {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.navbar .brand span {
+    color: var(--jungle-lime);
+}
+
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.navbar nav a {
+    color: #d8f3dc;
+    font-size: .92rem;
+    font-weight: 500;
+    padding: .35rem .7rem;
+    border-radius: var(--radius-sm);
+    transition: all .2s;
+}
+.navbar nav a:hover,
+.navbar nav a.active {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+}
+
+.navbar .btn-logout {
+    background: transparent;
+    border: 1px solid rgba(216, 243, 220, 0.35);
+    color: #d8f3dc;
+    padding: .4rem 1rem;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: .85rem;
+    font-weight: 500;
+    transition: all .2s;
+}
+.navbar .btn-logout:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    color: #fff;
+}
+
+/* ── Layout ────────────────────────────────────────────────── */
+.container {
+    width: 100%;
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    flex: 1;
+}
+
+/* ── Cards ─────────────────────────────────────────────────── */
+.card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.card-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.card-header p {
+    color: var(--gray-500);
+    margin-top: .25rem;
+    font-size: .9rem;
+}
+
+/* ── Forms ─────────────────────────────────────────────────── */
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: .875rem;
+    margin-bottom: .35rem;
+    color: var(--gray-800);
+}
+
+.form-control {
+    width: 100%;
+    padding: .65rem .85rem;
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius);
+    font-size: .95rem;
+    font-family: inherit;
+    transition: border-color .2s, box-shadow .2s, background-color .2s;
+    background: #fff;
+    color: var(--gray-900);
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(45, 106, 63, 0.18);
+    background: #fff;
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger);
+    background-color: #fff8f8;
+}
+
+textarea.form-control {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.error-text {
+    color: var(--danger);
+    font-size: .82rem;
+    margin-top: .35rem;
+    font-weight: 500;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+    padding: .65rem 1.35rem;
+    border: none;
+    border-radius: var(--radius);
+    font-size: .92rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all .2s ease;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1b4d27 0%, #2d6a3f 100%);
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(27, 77, 39, 0.25);
+}
+.btn-primary:hover {
+    background: linear-gradient(135deg, #10321f 0%, #1b4d27 100%);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(27, 77, 39, 0.35);
+    text-decoration: none;
+}
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: var(--gray-200);
+    color: var(--gray-700);
+}
+.btn-secondary:hover {
+    background: var(--gray-300);
+    text-decoration: none;
+    color: var(--gray-900);
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: #fff;
+}
+.btn-danger:hover {
+    background: #7f1d1d;
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-sm {
+    padding: .35rem .75rem;
+    font-size: .8rem;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+/* ── Alerts ────────────────────────────────────────────────── */
+.alert {
+    padding: .8rem 1.1rem;
+    border-radius: var(--radius);
+    font-size: .9rem;
+    margin-bottom: 1.25rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+}
+
+.alert-error {
+    background: var(--danger-bg);
+    color: var(--danger);
+    border: 1px solid var(--danger-border);
+}
+
+.alert-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+    border: 1px solid var(--warning-border);
+}
+
+/* ── Table ─────────────────────────────────────────────────── */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    text-align: left;
+    padding: .75rem 1rem;
+    font-size: .9rem;
+}
+
+table thead th {
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-weight: 600;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    border-bottom: 2px solid var(--gray-200);
+}
+
+table tbody tr {
+    border-bottom: 1px solid var(--gray-200);
+    transition: background .15s;
+}
+
+table tbody tr:hover {
+    background: var(--gray-50);
+}
+
+table td.actions {
+    white-space: nowrap;
+    display: flex;
+    gap: .5rem;
+}
+
+/* ── Filter Bar ────────────────────────────────────────────── */
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    background: var(--gray-100);
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+}
+
+.filter-bar .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.filter-bar .filter-group label {
+    font-size: .75rem;
+    font-weight: 700;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: .03em;
+}
+
+.filter-bar .filter-group input {
+    padding: .45rem .65rem;
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius);
+    font-size: .85rem;
+    font-family: inherit;
+    background: #fff;
+}
+
+.filter-bar .filter-group input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(45, 106, 63, .2);
+}
+
+.filter-actions {
+    display: flex;
+    gap: .5rem;
+    align-self: flex-end;
+}
+
+/* ── Feedback list cards ───────────────────────────────────── */
+.feedback-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.feedback-item {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    transition: box-shadow .2s;
+}
+
+.feedback-item:hover {
+    box-shadow: var(--shadow);
+}
+
+.feedback-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: .85rem;
+    color: var(--gray-500);
+    margin-bottom: .5rem;
+}
+
+.feedback-text {
+    font-size: .95rem;
+    color: var(--gray-800);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   JUNGLE THEME — Auth Pages (Login & Register)
+   ═══════════════════════════════════════════════════════════ */
+
+.auth-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2.5rem 1.25rem;
+    overflow: hidden;
+    /* Layered jungle canopy gradient: deep forest to lush green with sun-dappled lighting */
+    background:
+        radial-gradient(ellipse 65% 55% at 15% 10%, rgba(116, 198, 157, 0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 50% at 85% 90%, rgba(64, 145, 108, 0.24) 0%, transparent 70%),
+        radial-gradient(circle 400px at 50% 50%, rgba(45, 106, 63, 0.16) 0%, transparent 80%),
+        linear-gradient(135deg, #06190e 0%, #0d2818 25%, #143d22 55%, #1b5329 80%, #2d6a3f 100%);
+}
+
+/* ── Decorative Plant Container ────────────────────────────── */
+.jungle-decorations {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.plant-decor {
+    position: absolute;
+    pointer-events: none;
+    filter: drop-shadow(0 12px 25px rgba(0, 20, 10, 0.45));
+}
+
+/* ── Top-Left Hanging Jungle Vines ─────────────────────────── */
+.plant-vine-tl {
+    top: -20px;
+    left: -20px;
+    width: 280px;
+    height: 320px;
+    transform-origin: top left;
+    animation: swayVine 9s ease-in-out infinite alternate;
+}
+
+/* ── Top-Right Tropical Palm Fronds ────────────────────────── */
+.plant-palm-tr {
+    top: -30px;
+    right: -25px;
+    width: 320px;
+    height: 320px;
+    transform-origin: top right;
+    animation: swayPalm 11s ease-in-out infinite alternate;
+}
+
+/* ── Bottom-Left Monstera Deliciosa ────────────────────────── */
+.plant-monstera-bl {
+    bottom: -35px;
+    left: -30px;
+    width: 310px;
+    height: 330px;
+    transform-origin: bottom left;
+    animation: swayMonstera 10s ease-in-out infinite alternate;
+}
+
+/* ── Bottom-Right Jungle Fern Frond ────────────────────────── */
+.plant-fern-br {
+    bottom: -30px;
+    right: -25px;
+    width: 300px;
+    height: 330px;
+    transform-origin: bottom right;
+    animation: swayFern 8.5s ease-in-out infinite alternate;
+}
+
+/* ── Plant Sway Keyframes ──────────────────────────────────── */
+@keyframes swayVine {
+    0% { transform: rotate(0deg) translateY(0); }
+    50% { transform: rotate(2.5deg) translateY(6px); }
+    100% { transform: rotate(-2deg) translateY(-2px); }
+}
+
+@keyframes swayPalm {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(-3deg) scale(1.02); }
+    100% { transform: rotate(1.8deg) scale(0.99); }
+}
+
+@keyframes swayMonstera {
+    0% { transform: rotate(0deg) translateY(0); }
+    50% { transform: rotate(2.2deg) translateY(-6px); }
+    100% { transform: rotate(-1.5deg) translateY(4px); }
+}
+
+@keyframes swayFern {
+    0% { transform: rotate(0deg) translateX(0); }
+    50% { transform: rotate(-2.5deg) translateX(4px); }
+    100% { transform: rotate(1.8deg) translateX(-3px); }
+}
+
+/* ── Floating Fireflies / Glowing Spores ────────────────────── */
+.firefly {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #d8f3dc;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 3px rgba(149, 213, 178, 0.85), 0 0 20px 6px rgba(116, 198, 157, 0.4);
+    pointer-events: none;
+    opacity: 0;
+    animation: floatFirefly 8s ease-in-out infinite;
+}
+
+.firefly-1 { top: 20%; left: 18%; animation-delay: 0s; animation-duration: 9s; }
+.firefly-2 { top: 72%; left: 15%; animation-delay: 2.2s; animation-duration: 11s; }
+.firefly-3 { top: 25%; right: 22%; animation-delay: 4.5s; animation-duration: 10s; }
+.firefly-4 { top: 80%; right: 19%; animation-delay: 1.5s; animation-duration: 8.5s; }
+.firefly-5 { top: 48%; left: 80%; animation-delay: 5.5s; animation-duration: 12s; }
+.firefly-6 { top: 85%; left: 48%; animation-delay: 3.5s; animation-duration: 9.5s; }
+
+@keyframes floatFirefly {
+    0% { transform: translate(0, 0) scale(0.6); opacity: 0; }
+    25% { opacity: 0.95; transform: translate(14px, -18px) scale(1.1); }
+    50% { opacity: 0.35; transform: translate(-10px, -42px) scale(0.7); }
+    75% { opacity: 0.9; transform: translate(10px, -65px) scale(1.05); }
+    100% { transform: translate(0, -90px) scale(0.4); opacity: 0; }
+}
+
+/* ── Reduced Motion Accessibility ──────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+    .plant-decor,
+    .firefly {
+        animation: none !important;
+        transform: none !important;
+    }
+}
+
+/* ── Frosted-Glass Auth Card ───────────────────────────────── */
+.auth-card {
+    position: relative;
+    z-index: 10;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 2.75rem 2.25rem;
+    width: 100%;
+    max-width: 440px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ── Logo & Botanical Header ───────────────────────────────── */
+.auth-card .logo {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.brand-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .65rem;
+    margin-bottom: .35rem;
+}
+
+.brand-leaf-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--primary);
+    filter: drop-shadow(0 2px 4px rgba(45, 106, 63, 0.25));
+    flex-shrink: 0;
+}
+
+.auth-card .logo h1 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    letter-spacing: -.02em;
+    line-height: 1.2;
+}
+
+.auth-card .logo h1 span {
+    color: var(--primary);
+}
+
+.auth-card .logo .tagline {
+    color: var(--gray-600);
+    font-size: .92rem;
+    font-weight: 500;
+    margin-top: .35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .4rem;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--gray-200);
+    font-size: .875rem;
+    color: var(--gray-600);
+}
+
+.auth-footer a {
+    color: var(--primary);
+    font-weight: 600;
+}
+.auth-footer a:hover {
+    color: var(--primary-dark);
+}
+
+/* ── Responsive Styling ────────────────────────────────────── */
+@media (max-width: 768px) {
+    .plant-vine-tl { width: 190px; height: 220px; opacity: 0.65; }
+    .plant-palm-tr { width: 210px; height: 210px; opacity: 0.65; }
+    .plant-monstera-bl { width: 200px; height: 220px; opacity: 0.65; }
+    .plant-fern-br { width: 190px; height: 220px; opacity: 0.65; }
+    .auth-card { padding: 2.25rem 1.65rem; }
+}
+
+@media (max-width: 480px) {
+    .auth-wrapper { padding: 1.5rem 1rem; }
+    .plant-decor { opacity: 0.22; }
+    .firefly { display: none; }
+    .auth-card {
+        padding: 1.85rem 1.25rem;
+        border-radius: 16px;
+    }
+    .auth-card .logo h1 { font-size: 1.45rem; }
+}
+
+/* ── 403 page ──────────────────────────────────────────────── */
+.error-page {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.error-page h1 {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.error-page p {
+    font-size: 1.1rem;
+    color: var(--gray-500);
+    margin: .5rem 0 2rem;
+}
+
+/* ── Empty states ──────────────────────────────────────────── */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--gray-400);
+}
+
+.empty-state p {
+    font-size: 1rem;
+}
+
+/* ── Utility ───────────────────────────────────────────────── */
+.text-center { text-align: center; }
+.mt-1 { margin-top: .5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: .5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.gap-1 { gap: .5rem; }
+.flex { display: flex; }
+.justify-between { justify-content: space-between; }
+.items-center { align-items: center; }
+
+/* ── Combobox (Jungle Botanical Style) ─────────────────────── */
+.combobox-wrapper {
+    position: relative;
+}
+
+.combobox-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.combobox-input-wrapper input {
+    padding-right: 2rem !important;
+    width: 100%;
+}
+
+.combobox-toggle {
+    position: absolute;
+    right: 0.4rem;
+    background: transparent;
+    border: none;
+    color: var(--gray-500);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s, transform 0.15s;
+}
+
+.combobox-toggle:hover {
+    color: var(--primary);
+}
+
+.combobox-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    min-width: 220px;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #ffffff;
+    border: 1px solid var(--jungle-soft);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 25px -5px rgba(8, 28, 21, 0.25), 0 0 0 1px rgba(45, 106, 63, 0.12);
+    z-index: 1000;
+    padding: 5px;
+    list-style: none;
+}
+
+.combobox-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+.combobox-dropdown::-webkit-scrollbar-thumb {
+    background: var(--jungle-soft);
+    border-radius: 3px;
+}
+.combobox-dropdown::-webkit-scrollbar-track {
+    background: var(--gray-50);
+}
+
+.combobox-item {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.85rem;
+    color: var(--gray-800);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background 0.12s, color 0.12s;
+    user-select: none;
+}
+
+.combobox-item:hover,
+.combobox-item.active {
+    background: var(--primary-tint);
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.combobox-item.empty {
+    color: var(--gray-500);
+    cursor: default;
+    font-style: italic;
+    justify-content: center;
+    padding: 0.75rem;
+}
+
