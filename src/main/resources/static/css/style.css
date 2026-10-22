@@ -2,7 +2,6 @@
    Feedback Portal — Jungle Botanical Theme
    ═══════════════════════════════════════════════════════════ */
 
-/* ── Reset & Base ──────────────────────────────────────────── */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -10,7 +9,7 @@
 }
 
 :root {
-    /* Jungle / Botanical Palette */
+
     --primary: #2d6a3f;
     --primary-dark: #1b4332;
     --primary-light: #52b788;
@@ -24,11 +23,10 @@
     --jungle-soft: #95d5b2;
     --jungle-light: #d8f3dc;
 
-    /* Frosted Card */
+
     --card-bg: rgba(255, 255, 255, 0.90);
     --card-border: rgba(255, 255, 255, 0.65);
 
-    /* Status Colors */
     --success: #1b5329;
     --success-bg: #edfbf4;
     --success-border: #a3e6cd;

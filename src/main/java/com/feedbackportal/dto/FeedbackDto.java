@@ -9,7 +9,6 @@ public class FeedbackDto {
     @Size(max = 5000, message = "Feedback must be at most 5000 characters")
     private String feedback;
 
-    // ── Getters & Setters ──
 
     public String getFeedback() {
         return feedback;

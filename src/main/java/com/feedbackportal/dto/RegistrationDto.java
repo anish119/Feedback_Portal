@@ -16,7 +16,6 @@ public class RegistrationDto {
     @NotBlank(message = "Please confirm your password")
     private String confirmPassword;
 
-    // ── Getters & Setters ──
 
     public String getUserId() {
         return userId;

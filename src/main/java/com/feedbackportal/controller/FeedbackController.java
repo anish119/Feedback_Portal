@@ -1,17 +1,23 @@
 package com.feedbackportal.controller;
 
-import com.feedbackportal.dto.FeedbackDto;
-import com.feedbackportal.entity.Feedback;
-import com.feedbackportal.service.FeedbackService;
-import jakarta.validation.Valid;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.feedbackportal.dto.FeedbackDto;
+import com.feedbackportal.entity.Feedback;
+import com.feedbackportal.service.FeedbackService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/feedback")
@@ -23,7 +29,6 @@ public class FeedbackController {
         this.feedbackService = feedbackService;
     }
 
-    /* ── Add Feedback ────────────────────────────────────── */
 
     @GetMapping("/new")
     public String newFeedbackForm(Model model) {
@@ -44,15 +49,12 @@ public class FeedbackController {
         return "redirect:/feedback/new";
     }
 
-    /* ── My Feedbacks ────────────────────────────────────── */
 
     @GetMapping("/my")
     public String myFeedbacks(@AuthenticationPrincipal UserDetails user, Model model) {
         model.addAttribute("feedbacks", feedbackService.getUserFeedbacks(user.getUsername()));
         return "feedback/my";
     }
-
-    /* ── Edit Feedback ───────────────────────────────────── */
 
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id,
@@ -87,7 +89,6 @@ public class FeedbackController {
         return "redirect:/feedback/my";
     }
 
-    /** Security check: feedback must belong to the logged-in user. */
     private void verifyOwnership(Feedback fb, UserDetails user) {
         if (!fb.getUserId().equals(user.getUsername())) {
             throw new AccessDeniedException("Access denied: feedback does not belong to user");

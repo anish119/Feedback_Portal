@@ -13,17 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.feedbackportal.dto.FeedbackDto;
 import com.feedbackportal.entity.Feedback;
 import com.feedbackportal.service.FeedbackService;
+import com.feedbackportal.service.UserService;
 
 import jakarta.validation.Valid;
-
-import com.feedbackportal.service.UserService;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/admin")
@@ -37,10 +36,7 @@ public class AdminController {
         this.userService = userService;
     }
 
-    /**
-     * API for user_id combobox autocomplete.
-     * Returns matching user_ids (role USER only, excluding admin).
-     */
+   
     @GetMapping("/users/ids")
     @ResponseBody
     public List<String> getUserIds(@RequestParam(required = false) String q) {
@@ -107,7 +103,7 @@ public class AdminController {
         return "redirect:" + buildFilteredRedirectUrl(filterUserId, filterDateFrom, filterDateTo);
     }
 
-    /* ── Delete feedback ─────────────────────────────────── */
+    
 
     @PostMapping("/feedbacks/delete/{id}")
     public String deleteFeedback(@PathVariable Long id,
@@ -120,7 +116,6 @@ public class AdminController {
         return "redirect:" + buildFilteredRedirectUrl(filterUserId, filterDateFrom, filterDateTo);
     }
 
-    /* ── Helper: build redirect URL preserving filters ──── */
 
     private String buildFilteredRedirectUrl(String userId, String dateFrom, String dateTo) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/admin/feedbacks");

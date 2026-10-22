@@ -1,6 +1,9 @@
 package com.feedbackportal.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -24,7 +27,6 @@ public class User {
         this.role = role;
     }
 
-    // ── Getters & Setters ──
 
     public String getUserId() {
         return userId;

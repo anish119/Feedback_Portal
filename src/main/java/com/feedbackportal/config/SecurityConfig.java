@@ -1,6 +1,5 @@
 package com.feedbackportal.config;
 
-import com.feedbackportal.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -12,6 +11,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+
+import com.feedbackportal.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -71,14 +72,12 @@ public class SecurityConfig {
                 .accessDeniedHandler(accessDeniedHandler)
             );
 
-        // CSRF is enabled by default — Thymeleaf handles tokens automatically
+    
 
         return http.build();
     }
 
-    /**
-     * Redirect user to the correct landing page based on their role after login.
-     */
+
     @Bean
     public AuthenticationSuccessHandler roleBasedSuccessHandler() {
         return (request, response, authentication) -> {
